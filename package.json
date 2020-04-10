@@ -1,0 +1,41 @@
+{
+  "name": "audio-processing",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node_modules/nodemon/bin/nodemon.js index.js",
+    "docker:prod": "node index.js",
+    "docker:dev": "npm run dev",
+    "start": "node_modules/pm2/bin/pm2 start index.js -i 2 --name=TVW_AUDIO_PROCESSOR",
+    "stop": "pm2 stop TVW_AUDIO_PROCESSOR && pm2 delete TVW_AUDIO_PROCESSOR",
+    "restart": "npm stop && npm start && pm2 logs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/videowikips/audio-processing.git"
+  },
+  "author": "Videowiki, Hassan Amin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/videowikips/audio-processing/issues"
+  },
+  "homepage": "https://github.com/videowikips/audio-processing#readme",
+  "dependencies": {
+    "amqplib": "^0.5.3",
+    "async": "^2.6.2",
+    "aws-sdk": "^2.448.0",
+    "body-parser": "^1.19.0",
+    "dotenv": "^8.0.0",
+    "express": "^4.17.1",
+    "method-override": "^3.0.0",
+    "mongoose": "^5.5.5",
+    "mongoose-long": "^0.2.1",
+    "morgan": "^1.9.1",
+    "multer": "^1.4.2",
+    "nodemon": "^1.19.2",
+    "pm2": "^3.5.0",
+    "request": "^2.88.0"
+  }
+}
