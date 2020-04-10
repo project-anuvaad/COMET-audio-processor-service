@@ -88,29 +88,6 @@ app.post('/process_audio', upload.any(), (req, res) => {
     })
 })
 
-app.post('/process_video', (req, res) => {
-  const { url } = req.body;
-  utils.getRemoteFile(url, (err, filePath) => {
-    if (err) {
-      console.log('error download ifle', err);
-      return res.status(400).send('Something went wrong');
-    }
-    // processAudio({ filePath, outputFormat }, (err, outputPath) => {
-    //   if (err) {
-    //     console.log('Error processing audio', err);
-    //     return res.status(400).send('Something went wrong');
-    //   }
-    //   return res.sendFile(path.join(__dirname, outputPath), (err) => {
-    //     if (err) {
-    //       console.log('error sending back file', err);
-    //     }
-    //     fs.unlink(filePath, () => {});
-    //     fs.unlink(outputPath, () => {});
-    //   });
-    // })
-  })
-})
-
 app.listen(PORT)
 console.log(`Magic happens on port ${PORT}`)       // shoutout to the user
 console.log(`==== Running in ${process.env.NODE_ENV} mode ===`)
