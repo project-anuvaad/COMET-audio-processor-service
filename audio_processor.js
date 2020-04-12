@@ -6,12 +6,12 @@ const babblelabs =require('./babblelabs');
 const BABBLELABS_USERNAME = process.env.BABBLELABS_USERNAME;
 const BABBLELABS_PASSWORD = process.env.BABBLELABS_PASSWORD;
 
-function trimSilenceFromAudio(filePath, callback = (err, outputPath) => { }) {
+function trimSilenceFromAudio(filePath, callback = () => { }) {
     const fileExtension = filePath.split('.').pop();
-    const tmpPath = path.join('tmp', `tmpAudio-${Date.now()}.${fileExtension}`);
+    // const tmpPath = path.join('tmp', `tmpAudio-${Date.now()}.${fileExtension}`);
     const targetPath = path.join('tmp', `silenced-${Date.now()}.${fileExtension}`);
 
-    exec(`sox ${filePath} ${targetPath} silence -l 1 0.1 1% -1 2.0 1%`, (err, stdout, stderr) => {
+    exec(`sox ${filePath} ${targetPath} silence -l 1 0.1 1% -1 2.0 1%`, (err) => {
         if (err || !fs.existsSync(targetPath)) { 
             // fs.unlink(tmpPath, () => { });
             return callback(err);
@@ -28,7 +28,7 @@ function trimSilenceFromAudio(filePath, callback = (err, outputPath) => { }) {
     })
 }
 
-function clearBackgroundNoise(filePath, callback = (err, outputPath) => {}) {
+function clearBackgroundNoise(filePath, callback = () => {}) {
     const fileExtension = filePath.split('.').pop();
     const targetPath = path.join('tmp', `cleared-${Date.now()}.${fileExtension}`);
 
@@ -39,7 +39,7 @@ function clearBackgroundNoise(filePath, callback = (err, outputPath) => {}) {
         const token = `${token_type} ${auth_token}`;
         return babblelabs.clearAudio(token, BABBLELABS_USERNAME, filePath, targetPath);
     })
-    .then((res) => {
+    .then(() => {
         return callback(null, targetPath);
     })
     .catch((err) => {
@@ -50,7 +50,7 @@ function clearBackgroundNoise(filePath, callback = (err, outputPath) => {}) {
 function compressAudioFile(filePath, callback) {
     const fileExtension = filePath.split('.').pop();
     const targetPath = path.join('tmp', `tiny-${Date.now()}.${fileExtension}`);
-    exec(`sox ${filePath} ${targetPath} remix 1`, (err, stdout, stderr) => {
+    exec(`sox ${filePath} ${targetPath} remix 1`, (err) => {
         if (err || !fs.existsSync(targetPath)) return callback(err);
         return callback(null, targetPath);
     });
@@ -60,7 +60,7 @@ function compressAudioFile(filePath, callback) {
 function convertExtension(filePath, targetExtension, callback) {
     const outputPath = path.join(__dirname, 'tmp', `converted_${Date.now()}.${targetExtension}`);
 
-    exec(`ffmpeg -i ${filePath} ${outputPath}`, (err, stdout, stderr) => {
+    exec(`ffmpeg -i ${filePath} ${outputPath}`, (err) => {
         if (err) return callback(err);
         return callback(null, outputPath);
     })
@@ -70,7 +70,7 @@ function convertExtension(filePath, targetExtension, callback) {
 function convertToWav(filePath, callback) {
     const outputPath = path.join(__dirname, 'tmp', `converted_${Date.now()}.wav`);
 
-    exec(`ffmpeg -i ${filePath} ${outputPath}`, (err, stdout, stderr) => {
+    exec(`ffmpeg -i ${filePath} ${outputPath}`, (err) => {
         if (err) return callback(err);
         return callback(null, outputPath);
     })

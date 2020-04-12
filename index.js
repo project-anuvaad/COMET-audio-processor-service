@@ -61,7 +61,7 @@ app.post('/process_audio', upload.any(), (req, res) => {
     fetchFile = utils.getRemoteFile(url);
   } else if (files) {
     const file = files[0];
-    fetchFile = new Promise((resolve, reject) => {
+    fetchFile = new Promise((resolve) => {
       resolve(file.path);
     })
   } else {

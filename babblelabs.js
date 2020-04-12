@@ -36,7 +36,8 @@ function clearAudio(token, userId, filePath, targetPath) {
                     return resolve({ success: true, targetPath });
                 });
             } else {
-
+                console.log(body);
+                return reject(new Error('Something went wrong with babbellabs'))
             }
         })
     })
