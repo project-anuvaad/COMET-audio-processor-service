@@ -18,7 +18,7 @@ const upload = multer({ storage: storage })
 
 const PORT = process.env.PORT || 4000;
 
-const { processAudio } = require('./processAudio');
+const { processAudio, speedAudio } = require('./processAudio');
 const utils = require('./utils');
 
 // Listen on rabbitmq 
@@ -71,6 +71,42 @@ app.post('/process_audio', upload.any(), (req, res) => {
     processAudio({ filePath, outputFormat }, (err, outputPath) => {
       if (err) {
         console.log('Error processing audio', err);
+        return res.status(400).send('Something went wrong');
+      }
+      return res.sendFile(path.join(__dirname, outputPath), (err) => {
+        if (err) {
+          console.log('error sending back file', err);
+        }
+        fs.unlink(filePath, () => { });
+        fs.unlink(outputPath, () => { });
+      });
+    })
+  })
+    .catch(err => {
+      console.log(err);
+      return res.status(400).send('Something went wrong');
+    })
+})
+
+app.post('/audioSpeed', upload.any(), (req, res) => {
+  const { url, speed } = req.body;
+  const { files } = req;
+  let fetchFile;
+  console.log(files);
+  if (url) {
+    fetchFile = utils.getRemoteFile(url);
+  } else if (files) {
+    const file = files[0];
+    fetchFile = new Promise((resolve) => {
+      resolve(file.path);
+    })
+  } else {
+    return res.status(400).send('Please upload a file or provide a url');
+  }
+  fetchFile.then(filePath => {
+    speedAudio(filePath, speed, (err, outputPath) => {
+      if (err) {
+        console.log('Error speeding audio audio', err);
         return res.status(400).send('Something went wrong');
       }
       return res.sendFile(path.join(__dirname, outputPath), (err) => {
