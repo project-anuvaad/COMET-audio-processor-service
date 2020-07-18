@@ -1,10 +1,7 @@
 const { exec } = require('child_process');
 const path = require('path');
 const fs = require('fs');
-
 const babblelabs =require('./babblelabs');
-const BABBLELABS_USERNAME = process.env.BABBLELABS_USERNAME;
-const BABBLELABS_PASSWORD = process.env.BABBLELABS_PASSWORD;
 
 function trimSilenceFromAudio(filePath, callback = () => { }) {
     const fileExtension = filePath.split('.').pop();
@@ -32,13 +29,7 @@ function clearBackgroundNoise(filePath, callback = () => {}) {
     const fileExtension = filePath.split('.').pop();
     const targetPath = path.join('tmp', `cleared-${Date.now()}.${fileExtension}`);
 
-    babblelabs
-    .login(BABBLELABS_USERNAME, BABBLELABS_PASSWORD)
-    .then((res) => {
-        const { token_type, auth_token } = res;
-        const token = `${token_type} ${auth_token}`;
-        return babblelabs.clearAudio(token, BABBLELABS_USERNAME, filePath, targetPath);
-    })
+    babblelabs.clearAudio(filePath, targetPath)
     .then(() => {
         return callback(null, targetPath);
     })

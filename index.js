@@ -20,6 +20,7 @@ const PORT = process.env.PORT || 4000;
 
 const { processAudio, speedAudio } = require('./processAudio');
 const utils = require('./utils');
+const babbbellabs = require('./babblelabs');
 
 // Listen on rabbitmq 
 // require('./worker').init();
@@ -47,6 +48,17 @@ app.all('/*', (req, res, next) => {
 
 app.use(bodyParser())
 app.use(morgan('dev'));
+
+app.get('/health', (req, res) => {
+  babbbellabs.isTokenValid()
+  .then(() => {
+    return res.status(200).send('OK')
+  })
+  .catch(err => {
+    console.log(err);
+    return res.status(503).send('BABBELLABS DOWN')
+  })
+})
 
 app.get('/', (req, res) => {
   return res.status(200).send('Audio Processor api root');
