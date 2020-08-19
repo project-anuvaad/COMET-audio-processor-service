@@ -63,9 +63,10 @@ function login(userId, password) {
       { body, json: true },
       (err, response, body) => {
         if (err) return reject(err);
-        if (response.statusCode >= 400)
+        if (response.statusCode >= 400){
+          console.log(response)
           return reject(new Error("Something went wrong"));
-
+        }
         return resolve(body);
       }
     );
