@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/videowikips/audio-processing#readme",
   "dependencies": {
+    "@videowiki/vendors": "^1.1.0",
     "amqplib": "^0.5.3",
     "async": "^2.6.2",
     "aws-sdk": "^2.448.0",

@@ -49,6 +49,35 @@ app.all('/*', (req, res, next) => {
 app.use(bodyParser())
 app.use(morgan('dev'));
 
+const amqp = require("amqplib/callback_api");
+amqp.connect(process.env.RABBITMQ_SERVER, (err, conn) => {
+  if (err) {
+    console.log("error is", err);
+  }
+
+  conn.createChannel((err, ch) => {
+    if (err) {
+      console.log("Error creating conection ", err);
+      return process.exit(1);
+    }
+
+    console.log("rabbitmq connection created");
+    channel = ch;
+
+    channel.on("error", (err) => {
+      console.log("RABBITMQ ERROR", err);
+      process.exit(1);
+    });
+    channel.on("close", () => {
+      console.log("RABBITMQ CLOSE");
+      process.exit(1);
+    });
+
+    require('./rabbitmqHandler').init(channel)
+
+  });
+});
+
 app.get('/health', (req, res) => {
   babbbellabs.isTokenValid()
   .then(() => {
