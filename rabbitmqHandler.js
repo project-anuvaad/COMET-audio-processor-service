@@ -2,7 +2,7 @@ const fs = require("fs");
 
 const { processAudio } = require("./processAudio");
 
-const storageService = require("@videowiki/vendors/storage");
+const storageService = require("@comet-anuvaad/vendors/storage");
 const utils = require("./utils");
 
 const PROCESS_NOISECANCELLATIONVIDEO_AUDIO_QUEUE = `PROCESS_NOISECANCELLATIONVIDEO_AUDIO_QUEUE`;

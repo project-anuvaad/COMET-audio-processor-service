@@ -14,16 +14,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/videowikips/audio-processing.git"
+    "url": "git+https://github.com/project-anuvaad/COMET-audio-processor-service.git"
   },
-  "author": "Videowiki, Hassan Amin",
+  "author": "Hassan Amin",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/videowikips/audio-processing/issues"
+    "url": "https://github.com/project-anuvaad/COMET-audio-processor-service/issues"
   },
-  "homepage": "https://github.com/videowikips/audio-processing#readme",
   "dependencies": {
-    "@videowiki/vendors": "^1.1.0",
+    "@comet-anuvaad/vendors": "^1.0.0",
     "amqplib": "^0.5.3",
     "async": "^2.6.2",
     "aws-sdk": "^2.448.0",
